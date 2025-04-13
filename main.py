@@ -1,4 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
+import time
 
 class Window():
     def __init__(self,width,height):
@@ -44,7 +45,7 @@ class Cell():
     _x2,
     _y1,
     _y2,
-    _win,
+    _win = None,
     has_left_wall = True,
     has_right_wall= True,
     has_top_wall= True,
@@ -92,18 +93,61 @@ class Maze():
         num_cols,
         cell_size_x,
         cell_size_y,
-        win,
+        _win = None,
     ):
         
-        pass
+        self.x1 = x1
+        self.y1 = y1
+        self.num_rows = num_rows
+        self.num_cols = num_cols
+        self.cell_size_x = cell_size_x
+        self.cell_size_y = cell_size_y
+        self._win = _win
+        
 
-    self._create_cells()
+        self._create_cells()
 
     def _create_cells(self):
-        pass
+        self._cells = []
+        for i in range(self.num_cols):
+            column = []
+            for j in range(self.num_rows):
+                x1 = self.x1 + (i * self.cell_size_x)
+                y1 = self.y1 + (j * self.cell_size_y)
+                x2 = self.x1 + ((i+1) * self.cell_size_x)
+                y2 = self.y1 + ((j+1) * self.cell_size_y)
+
+                cell = Cell(x1, x2, y1, y2, self._win)
+                column.append(cell)
+
+                self._draw_cell(i,j)
+            self._cells.append(column)
+    
+    def _draw_cell(self, i, j):
+        if self._win is None:
+            return
+        if len(self._cells) > i and len(self._cells[i]) > j:
+        # Use the existing cell
+            self._cells[i][j].draw()
+        else:
+            x1 = self.x1 + (i * self.cell_size_x)
+            y1 = self.y1 + (j * self.cell_size_y)
+            x2 = self.x1 + ((i+1) * self.cell_size_x)
+            y2 = self.y1 + ((j+1) * self.cell_size_y)
+
+            cell = Cell(x1, x2, y1, y2, self.win)
+            cell.draw()
+        self._animate()
+    
+    def _animate(self):
+        if self._win is None:
+            return
+        self.win.redraw()
+        time.sleep(0.05)
 
 def main():
     win = Window(800, 600)
+    maze = Maze (2,2,10,10,79,59,win)
     win.wait_for_close()
 
 

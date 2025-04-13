@@ -63,12 +63,20 @@ class Cell():
     def draw(self):
         if self.has_left_wall is True:
             self.win.draw_line(Line(Point(self.x1,self.y1),Point(self.x1,self.y2)),"black")
+        else:
+            elf.win.draw_line(Line(Point(self.x1,self.y1),Point(self.x1,self.y2)),"white")
         if self.has_right_wall is True:
             self.win.draw_line(Line(Point(self.x2,self.y1),Point(self.x2,self.y2)),"black")
+        else:
+            self.win.draw_line(Line(Point(self.x2,self.y1),Point(self.x2,self.y2)),"white")
         if self.has_top_wall is True:
             self.win.draw_line(Line(Point(self.x1,self.y1),Point(self.x2,self.y1)),"black")
+        else:
+            self.win.draw_line(Line(Point(self.x1,self.y1),Point(self.x2,self.y1)),"white")
         if self.has_bottom_wall is True:
             self.win.draw_line(Line(Point(self.x1,self.y2),Point(self.x2,self.y2)),"black")
+        else:
+            self.win.draw_line(Line(Point(self.x1,self.y2),Point(self.x2,self.y2)),"white")
         
     def draw_move(self, to_cell, undo=False):
         self_center_x = (self.x1 + self.x2) / 2
@@ -127,7 +135,6 @@ class Maze():
         if self._win is None:
             return
         if len(self._cells) > i and len(self._cells[i]) > j:
-        # Use the existing cell
             self._cells[i][j].draw()
         else:
             x1 = self.x1 + (i * self.cell_size_x)
@@ -135,15 +142,20 @@ class Maze():
             x2 = self.x1 + ((i+1) * self.cell_size_x)
             y2 = self.y1 + ((j+1) * self.cell_size_y)
 
-            cell = Cell(x1, x2, y1, y2, self.win)
+            cell = Cell(x1, x2, y1, y2, self._win)
             cell.draw()
         self._animate()
     
     def _animate(self):
         if self._win is None:
             return
-        self.win.redraw()
+        self._win.redraw()
         time.sleep(0.05)
+
+    def _break_entrance_and_exit(self):
+        
+        
+        pass
 
 def main():
     win = Window(800, 600)

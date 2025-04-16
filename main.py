@@ -1,6 +1,7 @@
 from tkinter import Tk, BOTH, Canvas
 import time
 import random
+from datetime import datetime
 
 class Window():
     def __init__(self,width,height):
@@ -168,6 +169,7 @@ class Maze():
         self._cells[-1][-1].draw()
     
     def _break_walls_r(self,i,j):
+        self._animate()
         self._cells[i][j].visited = True
         while True:
             to_visit = []
@@ -241,12 +243,19 @@ class Maze():
         return False
 
     def solve(self):
-        return self._solve_r(0,0)
+        start = datetime.now()
+        solved = self._solve_r(0,0)
+        end = datetime.now()
+        if not solved:
+            print("Maze was not solvable :()")
+        else:
+            time = end-start
+            print(f"solved in {time.seconds} seconds!")
         
 
 def main():
     win = Window(800, 600)
-    maze = Maze (2,2,28,30,26,20,win)
+    maze = Maze (2,2,10,10,79,59,win)
     maze.solve()
     win.wait_for_close()
 
